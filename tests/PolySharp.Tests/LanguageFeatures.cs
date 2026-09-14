@@ -10,7 +10,11 @@ using System.Threading.Tasks;
 
 #pragma warning disable CA2255
 
+#if INTERNALS_VISIBLE_TO_TESTS
+namespace PolySharp.InternalsVisbleTo.Tests;
+#else
 namespace PolySharp.Tests;
+#endif
 
 internal class TestClass
 {
@@ -315,4 +319,14 @@ internal sealed class TestUnion : IUnion
     }
 
     public object? Value => this.value;
+[CompilerLoweringPreserve]
+internal sealed class TestFlowingAttribute : Attribute;
+
+// Test for '[ExtensionMarker]'
+internal static class ExtensionContainer
+{
+    extension(string s)
+    {
+        public bool M => s == "PolySharp";
+    }
 }

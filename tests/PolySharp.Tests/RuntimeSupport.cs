@@ -9,7 +9,11 @@ using System.Runtime.Versioning;
 
 [assembly: DisableRuntimeMarshalling]
 
+#if INTERNALS_VISIBLE_TO_TESTS
+namespace PolySharp.InternalsVisbleTo.Tests;
+#else
 namespace PolySharp.Tests;
+#endif
 
 internal class RandomApis
 {
@@ -99,6 +103,9 @@ internal class AccessorApis
 
     [UnsafeAccessor(UnsafeAccessorKind.Field, Name = nameof(field))]
     public static extern ref int GetField(RandomApis obj);
+
+    [UnsafeAccessor(UnsafeAccessorKind.Field, Name = nameof(field))]
+    public static extern ref int GetAnonymousField([UnsafeAccessorType("Foo, PolySharp.ExternalTypes")] object? obj);
 }
 
 [InlineArray(16)]
